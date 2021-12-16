@@ -48,6 +48,8 @@ provider:
       Action:
         - dynamodb:*
         - execute-api:*
+        - s3:*
+        - ses:*
       Resource: "*"
 
 functions:

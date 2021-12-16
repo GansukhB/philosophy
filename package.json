@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npx serverless offline --httpPort 4000 --stage local",
     "deploy": "npx serverless deploy --stage development",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx jest"
   },
   "repository": {
     "type": "git",
@@ -42,6 +42,14 @@
     "testMatch": [
       "<rootDir>/tests/endpoints/*.js"
     ],
+    "collectCoverageFrom": [
+      "*.js",
+      "**/*.{js,jsx}",
+      "<rootDir>/endpoints/**.{js,jsx}",
+      "!**/node_modules/**",
+      "!**/vendor/**",
+      "!tests/**"
+    ],
     "coverageThreshold": {
       "global": {
         "branches": 100,
@@ -50,5 +58,9 @@
         "statements": 100
       }
     }
+  },
+  "dependencies": {
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.1.2"
   }
 }
