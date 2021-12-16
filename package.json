@@ -1,0 +1,19 @@
+{
+  "name": "philosophy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GansukhB/philosophy.git"
+  },
+  "author": "Nest Leap 4",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GansukhB/philosophy/issues"
+  },
+  "homepage": "https://github.com/GansukhB/philosophy#readme"
+}
