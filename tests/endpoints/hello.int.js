@@ -19,8 +19,11 @@ describe("Test sample endpoint /hello", () => {
       method: "get",
       body: {},
     });
+
     const res = await handler.hello(event);
+
     expect(res).toBeDefined();
+
     const responseBody = JSON.parse(res.body);
     expect(responseBody.message).toBeDefined();
     expect(responseBody.message).toBe(
