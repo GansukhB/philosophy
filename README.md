@@ -1,4 +1,4 @@
-# Philophy app API
+# Philosophy app API
 
 ## Requirements
 
