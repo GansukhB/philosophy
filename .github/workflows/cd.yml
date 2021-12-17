@@ -9,18 +9,16 @@ jobs:
   deploy:
     name: deploy
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.x]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: "14"
       - name: Install dependencies
-      - run: npm install
+        run: npm install
       - name: Create environment for staging
-      - run: |
+        shell: bash
+        run: |
           echo '{' > stages/env_staging.json
           echo '"REGION": "ap-southeast-1",' >> stages/env_staging.json
           echo '"STAGE": "staging",'  >> stages/env_staging.json
@@ -31,7 +29,6 @@ jobs:
           echo '"REDIS_DB": "' + ${{ secrets.REDIS_DB }} + '",' >> stages/env_staging.json
           echo '"EMAIL_SENDER": "' + ${{ secrets.EMAIL_SENDER }} + '"' >> stages/env_staging.json
           echo '}' >> stages/env_staging.json
-
       - name: serverless deploy
         uses: serverless/github-action@master
         with:
