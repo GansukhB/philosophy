@@ -7,7 +7,6 @@ const UserSchema = new mongoose.Schema(
       maxlength: 64,
       minlength: 2,
       required: false,
-      sparse: true,
     },
     email: {
       type: String,
@@ -21,7 +20,6 @@ const UserSchema = new mongoose.Schema(
       maxlength: 255,
       minlength: 6,
       required: false,
-      unique: true,
     },
     verified: {
       type: Boolean,
