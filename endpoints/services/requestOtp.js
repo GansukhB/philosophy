@@ -3,7 +3,7 @@ import { HTTP_ERROR_400, HTTP_ERROR_403 } from "../../common/statuses";
 import connectDb from "../../common/db";
 import generateResponse from "../../common/response";
 import sendEmail from "../../common/ses";
-import {generateOtpForUser} from '../../common/generators'
+import { generateOtpForUser } from "../../common/generators";
 
 export default async function ({ event }) {
   const requestBody = event && event.body ? JSON.parse(event.body) : {};
@@ -20,11 +20,29 @@ export default async function ({ event }) {
       const existingUser = await User.findOne({
         email: email,
       }).lean();
-
-      // If user with given email exists, it should return 403
+      
+      // If user with given email exists, It will send OTP and return 200
       if (existingUser) {
-        return generateResponse(403, {
-          message: "User exists",
+         const otp = await generateOtpForUser(existingUser._id);
+         const emailResponse = await sendEmail({
+           to: existingUser.email,
+           from: process.env.EMAIL_SENDER,
+           subject: "Таны нэг удаагийн нууц үг",
+           text: `Таны удаагийн нууц үг: ${otp}`,
+         });
+         if (emailResponse) {
+             return generateResponse(200, {
+               message: "email sent",
+             });
+         }else{
+             return generateResponse(501, {
+               message: "Couldn't send email",
+             });
+         }
+            
+      } else {
+        return generateResponse(400, {
+          message: "user doesnt exists",
         });
       }
     } catch (e) {
@@ -34,12 +52,10 @@ export default async function ({ event }) {
     const user = await User.create({
       email: email,
     });
-
-    const otp = await generateOtpForUser(user._id)
     const to = user.email;
     const from = "bganaa2009@gmail.com";
     const subject = "Email хаяг баталгаажуулах код";
-    const text = `Таны баталгаажуулах код ${otp}`; // Generated OTP must be sent
+    const text = "text"; // Generated OTP must be sent
     try {
       await sendEmail({ to, from, subject, text });
     } catch (e) {

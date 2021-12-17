@@ -2,6 +2,7 @@ import { User } from "../common/models/User";
 import generateResponse from "../common/response";
 import userRegister from "./services/userRegister";
 import userLogin from "./services/userLogin";
+import requestOtp from "./services/requestOtp";
 
 export async function api(event, context) {
   context.callbackWaitsForEmptyEventLoop = false;
@@ -14,6 +15,9 @@ export async function api(event, context) {
 
     if (functionName === "userLogin") {
       return await userLogin({ event });
+    }
+    if (functionName === "requestOtp") {
+      return await requestOtp({ event });
     }
   } catch (error) {
     return error;

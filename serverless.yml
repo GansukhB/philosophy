@@ -42,6 +42,7 @@ provider:
     MONGODB_HOST: ${self:custom.secrets.MONGODB_HOST}
     REDIS: ${self:custom.secrets.REDIS}
     REDIS_DB: ${self:custom.secrets.REDIS_DB}
+    EMAIL_SENDER: ${self:custom.secrets.EMAIL_SENDER}
 
   iamRoleStatements:
     - Effect: Allow
