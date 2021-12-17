@@ -1,0 +1,17 @@
+name: CI
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install modules
+        run: npm install
+      - name: Run unit tests
+        run: npm test unit
+      - name: Run integration tests
+        run: npm test unit
+      - name: Run coverage test
+        run: npm test --coverage
+      - name: Run eslint
+        run: npm run eslint
