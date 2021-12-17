@@ -1,9 +1,9 @@
-name: Deploy main branch for staging to AWS
+name: CD
 
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   deploy:
