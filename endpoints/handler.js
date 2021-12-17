@@ -12,7 +12,7 @@ export async function api(event, context) {
       return await userRegister({ event });
     }
      if (functionName === "requestOtp") {
-       return await userRegister({ event });
+       return await requestOtp({ event });
      }
   } catch (error) {
     return error;
