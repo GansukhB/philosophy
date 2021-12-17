@@ -52,6 +52,7 @@
       "*.js",
       "**/*.{js,jsx}",
       "<rootDir>/endpoints/**.{js,jsx}",
+      "<rootDir>/common/**.{js,jsx}",
       "!**/node_modules/**",
       "!**/vendor/**",
       "!tests/**"

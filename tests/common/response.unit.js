@@ -8,4 +8,9 @@ describe("Testing response generator", () => {
     expect(response.statusCode).toBe(200);
     expect(response.headers instanceof Object).toBe(true);
   });
+  test("Testing response generator with default params ", async () => {
+    const response = responseGenerator();
+    expect(response.statusCode).toBe(502);
+    expect(response.headers instanceof Object).toBe(true);
+  });
 });
