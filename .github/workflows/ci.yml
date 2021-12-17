@@ -1,5 +1,8 @@
 name: CI
 on: push
+
+env:
+  MONGODB_HOST: "MONGODB_HOST"
 jobs:
   build:
     runs-on: ubuntu-latest
