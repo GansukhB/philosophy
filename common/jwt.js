@@ -21,7 +21,7 @@ function verify(event) {
     throw HTTP_ERROR_401;
   }
 
-  return await jwt.verify(token, JWT_SECRET, (err, user) => {
+  return jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) throw HTTP_ERROR_403;
     return user;
   });

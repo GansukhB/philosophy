@@ -11,9 +11,9 @@ export async function api(event, context) {
     if (functionName === "userRegister") {
       return await userRegister({ event });
     }
-     if (functionName === "requestOtp") {
-       return await requestOtp({ event });
-     }
+    if (functionName === "requestOtp") {
+      return await requestOtp({ event });
+    }
   } catch (error) {
     return error;
   }

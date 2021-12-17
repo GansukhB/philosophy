@@ -1,0 +1,38 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+      - name: Install dependencies
+        run: npm install
+      - name: Create environment for staging
+        shell: bash
+        run: |
+          echo '{' > stages/env_staging.json
+          echo '"REGION": "ap-southeast-1",' >> stages/env_staging.json
+          echo '"STAGE": "staging",'  >> stages/env_staging.json
+          echo '"JWT_SECRET": "${{ secrets.JWT_SECRET }}",'  >> stages/env_staging.json
+          echo '"JWT_REFRESH_TOKEN_SECRET": "${{ secrets.JWT_REFRESH_TOKEN_SECRET }}",'  >> stages/env_staging.json
+          echo '"MONGODB_HOST": "${{ secrets.MONGODB_HOST }}",' >> stages/env_staging.json
+          echo '"REDIS": "${{ secrets.REDIS }}",' >> stages/env_staging.json
+          echo '"REDIS_DB": "${{ secrets.REDIS_DB }}",' >> stages/env_staging.json
+          echo '"EMAIL_SENDER": "${{ secrets.EMAIL_SENDER }}"' >> stages/env_staging.json
+          echo '}' >> stages/env_staging.json
+      - name: serverless deploy
+        uses: serverless/github-action@master
+        with:
+          args: deploy --stage staging
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

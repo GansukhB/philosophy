@@ -20,26 +20,25 @@ export default async function ({ event }) {
       const existingUser = await User.findOne({
         email: email,
       }).lean();
-      
+
       // If user with given email exists, It will send OTP and return 200
       if (existingUser) {
-         const otp = await generateOtpForUser(existingUser._id);
-         const emailResponse = await sendEmail({
-           to: existingUser.email,
-           from: process.env.EMAIL_SENDER,
-           subject: "Таны нэг удаагийн нууц үг",
-           text: `Таны удаагийн нууц үг: ${otp}`,
-         });
-         if (emailResponse) {
-             return generateResponse(200, {
-               message: "email sent",
-             });
-         }else{
-             return generateResponse(501, {
-               message: "Couldn't send email",
-             });
-         }
-            
+        const otp = await generateOtpForUser(existingUser._id);
+        const emailResponse = await sendEmail({
+          to: existingUser.email,
+          from: process.env.EMAIL_SENDER,
+          subject: "Таны нэг удаагийн нууц үг",
+          text: `Таны удаагийн нууц үг: ${otp}`,
+        });
+        if (emailResponse) {
+          return generateResponse(200, {
+            message: "email sent",
+          });
+        } else {
+          return generateResponse(501, {
+            message: "Couldn't send email",
+          });
+        }
       } else {
         return generateResponse(400, {
           message: "user doesnt exists",
