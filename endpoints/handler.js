@@ -16,6 +16,7 @@ export async function api(event, context) {
     if (functionName === "userLogin") {
       return await userLogin({ event });
     }
+
     if (functionName === "requestOtp") {
       return await requestOtp({ event });
     }

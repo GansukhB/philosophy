@@ -6,7 +6,8 @@
   "scripts": {
     "start": "npx serverless offline --httpPort 4000 --stage local",
     "deploy": "npx serverless deploy --stage development",
-    "test": "npx jest"
+    "test": "npx jest",
+    "eslint": "npx eslint --ext .jsx,.js common/ endpoints/"
   },
   "repository": {
     "type": "git",
@@ -22,7 +23,11 @@
     "@babel/core": "^7.16.0",
     "@babel/plugin-transform-modules-commonjs": "^7.16.5",
     "babel-loader": "^8.2.3",
+    "eslint": "^8.4.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "jest": "^27.4.5",
+    "prettier": "^2.5.1",
     "serverless": "^2.69.0",
     "serverless-domain-manager": "^5.1.5",
     "serverless-jest-plugin": "^0.4.0",
@@ -48,6 +53,7 @@
       "*.js",
       "**/*.{js,jsx}",
       "<rootDir>/endpoints/**.{js,jsx}",
+      "<rootDir>/common/**.{js,jsx}",
       "!**/node_modules/**",
       "!**/vendor/**",
       "!tests/**"
