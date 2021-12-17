@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { HTTP_ERROR_401, HTTP_ERROR_403 } from "../../common/statuses";
+import { HTTP_ERROR_401, HTTP_ERROR_403 } from "../common/statuses";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -26,3 +26,5 @@ function verify(event) {
     return user;
   });
 }
+
+export { generateAccessToken, generateRefreshToken, verify };
