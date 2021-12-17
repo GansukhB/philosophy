@@ -4,6 +4,7 @@ import connectDb from "../../common/db";
 import generateResponse from "../../common/response";
 import sendEmail from "../../common/ses";
 import { generateOtpForUser } from "../../common/generators";
+import { validateEmail } from "../../common/validator";
 
 export default async function ({ event }) {
   const requestBody = event && event.body ? JSON.parse(event.body) : {};
@@ -14,6 +15,11 @@ export default async function ({ event }) {
       // Email validation regex will be created soon!
       return generateResponse(201, {
         message: "Email is required",
+      });
+    }
+    if (!validateEmail(email)) {
+      return generateResponse(201, {
+        message: "Invalid email address",
       });
     }
     try {
