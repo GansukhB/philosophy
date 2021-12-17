@@ -3,6 +3,7 @@ import { HTTP_ERROR_400, HTTP_ERROR_403 } from "../../common/statuses";
 import connectDb from "../../common/db";
 import generateResponse from "../../common/response";
 import sendEmail from "../../common/ses";
+import {generateOtpForUser} from '../../common/generators'
 
 export default async function ({ event }) {
   const requestBody = event && event.body ? JSON.parse(event.body) : {};
@@ -33,10 +34,12 @@ export default async function ({ event }) {
     const user = await User.create({
       email: email,
     });
+
+    const otp = await generateOtpForUser(user._id)
     const to = user.email;
     const from = "bganaa2009@gmail.com";
     const subject = "Email хаяг баталгаажуулах код";
-    const text = "text"; // Generated OTP must be sent
+    const text = `Таны баталгаажуулах код ${otp}`; // Generated OTP must be sent
     try {
       await sendEmail({ to, from, subject, text });
     } catch (e) {
