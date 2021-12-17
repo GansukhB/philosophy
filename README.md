@@ -2,7 +2,7 @@
 
 ## Requirements
 
-nodejs v14.x #you may need use NVM
+nodejs v14.x #you may need to use NVM
 serverless
 
 ## Developmenet commands
