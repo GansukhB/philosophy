@@ -3,7 +3,7 @@ import { HTTP_ERROR_400, HTTP_ERROR_403 } from "../../common/statuses";
 import connectDb from "../../common/db";
 import generateResponse from "../../common/response";
 import sendEmail from "../../common/ses";
-import {generateOtp} from "../../common/generators"
+import { generateOtpForUser } from "../../common/generators";
 
 export default async function ({ event }) {
   const requestBody = event && event.body ? JSON.parse(event.body) : {};
@@ -23,7 +23,7 @@ export default async function ({ event }) {
       
       // If user with given email exists, It will send OTP and return 200
       if (existingUser) {
-          const otp = generateOtp();
+         const otp = await generateOtpForUser(existingUser._id);
          const emailResponse = await sendEmail({
            to: existingUser.email,
            from: process.env.EMAIL_SENDER,
