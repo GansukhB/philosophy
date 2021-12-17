@@ -22,12 +22,12 @@ jobs:
           echo '{' > stages/env_staging.json
           echo '"REGION": "ap-southeast-1",' >> stages/env_staging.json
           echo '"STAGE": "staging",'  >> stages/env_staging.json
-          echo '"JWT_SECRET": "' + ${{ secrets.JWT_SECRET }} + '",'  >> stages/env_staging.json
-          echo '"JWT_REFRESH_TOKEN_SECRET": "' + ${{ secrets.JWT_REFRESH_TOKEN_SECRET }} + '",'  >> stages/env_staging.json
-          echo '"MONGODB_HOST": "' + ${{ secrets.MONGODB_HOST }} + '",' >> stages/env_staging.json
-          echo '"REDIS": "' + ${{ secrets.REDIS }} + '",' >> stages/env_staging.json
-          echo '"REDIS_DB": "' + ${{ secrets.REDIS_DB }} + '",' >> stages/env_staging.json
-          echo '"EMAIL_SENDER": "' + ${{ secrets.EMAIL_SENDER }} + '"' >> stages/env_staging.json
+          echo '"JWT_SECRET": "' + '${{ secrets.JWT_SECRET }}' + '",'  >> stages/env_staging.json
+          echo '"JWT_REFRESH_TOKEN_SECRET": "' + '${{ secrets.JWT_REFRESH_TOKEN_SECRET }}' + '",'  >> stages/env_staging.json
+          echo '"MONGODB_HOST": "' + '${{ secrets.MONGODB_HOST }}' + '",' >> stages/env_staging.json
+          echo '"REDIS": "' + '${{ secrets.REDIS }}' + '",' >> stages/env_staging.json
+          echo '"REDIS_DB": "' + '${{ secrets.REDIS_DB }}' + '",' >> stages/env_staging.json
+          echo '"EMAIL_SENDER": "' + '${{ secrets.EMAIL_SENDER }}' + '"' >> stages/env_staging.json
           echo '}' >> stages/env_staging.json
       - name: serverless deploy
         uses: serverless/github-action@master
