@@ -47,7 +47,7 @@ export default async function ({ event }) {
     const subject = "Email хаяг баталгаажуулах код";
     const text = `Таны баталгаажуулах код ${otp}`; // Generated OTP must be sent
     try {
-      await sendEmail({ to, from, subject, text });
+      if (!process.env.CI) await sendEmail({ to, from, subject, text });
     } catch (e) {
       console.log("error email", e);
     }
