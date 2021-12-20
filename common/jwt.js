@@ -4,7 +4,6 @@ import { HTTP_ERROR_401, HTTP_ERROR_403 } from "../common/statuses";
 const JWT_SECRET = process.env.JWT_SECRET;
 
 function generateAccessToken(user) {
-  // console.log('acces token', user)
   return jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "24h" });
 }
 async function generateRefreshToken(user) {
@@ -14,7 +13,6 @@ async function generateRefreshToken(user) {
 
   return refreshToken;
 }
-
 
 function verify(event) {
 
@@ -26,10 +24,10 @@ function verify(event) {
     throw HTTP_ERROR_401;
   }
 
-    return jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-      if (err) return HTTP_ERROR_403;
-      return user;
-    });
+  return jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) return HTTP_ERROR_403;
+    return user;
+  });
 }
 
 

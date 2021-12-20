@@ -23,8 +23,6 @@ export default async function ({ event }) {
       const otpUser = await UserOtp.findOne({
         otp: otp,
       }).lean();
-
-      console.log('otpUser', otpUser)
       
       if (!otpUser) {
         return generateResponse(400, {
@@ -33,8 +31,6 @@ export default async function ({ event }) {
       }
 
       const loginUser = await User.findOne({ _id: otpUser.userId }).lean();
-
-      console.log('loginUser', loginUser)
 
       if (loginUser) {
         try {
