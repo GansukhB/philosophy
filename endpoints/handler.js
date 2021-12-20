@@ -3,7 +3,6 @@ import generateResponse from "../common/response";
 import userRegister from "./services/userRegister";
 import userLogin from "./services/userLogin";
 import requestOtp from "./services/requestOtp";
-import requestToken from "./services/requestToken";
 
 export async function api(event, context) {
   context.callbackWaitsForEmptyEventLoop = false;
@@ -20,10 +19,6 @@ export async function api(event, context) {
 
     if (functionName === "requestOtp") {
       return await requestOtp({ event });
-    }
-
-    if (functionName === "requestToken") {
-      return await requestToken({ event });
     }
   } catch (error) {
     return error;
