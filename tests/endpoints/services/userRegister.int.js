@@ -1,9 +1,54 @@
 const eventGenerator = require("../../testUtils/eventGenerator");
 const validators = require("../../testUtils/validators");
 const handler = require("../../../endpoints/handler");
+import mongoose from "mongoose";
+import { User } from "../../../common/models/User";
 
 describe("Test endpoint /endpoint/userRegister", () => {
-  test("It should return 200 status code", async () => {
+  beforeAll(async () => {
+    //return new Promise((resolve) => {
+    process.env.MONGODB_HOST = "mongodb://127.0.0.1:27017/test";
+    //  resolve();
+  });
+  test("Test request without email", async () => {
+    const event = eventGenerator({
+      method: "post",
+      body: {},
+      pathParametersObject: {
+        functionName: "userRegister",
+      },
+    });
+    const res = await handler.api(event, {});
+
+    expect(res).toBeDefined();
+    expect(res.statusCode).toBe(400);
+
+    const responseBody = JSON.parse(res.body);
+
+    expect(responseBody.message).toBeDefined();
+    expect(responseBody.message).toBe("Email is required.");
+  });
+  test("Test request with invalid email", async () => {
+    const event = eventGenerator({
+      method: "post",
+      body: {
+        email: "invalid.com",
+      },
+      pathParametersObject: {
+        functionName: "userRegister",
+      },
+    });
+    const res = await handler.api(event, {});
+
+    expect(res).toBeDefined();
+    expect(res.statusCode).toBe(400);
+
+    const responseBody = JSON.parse(res.body);
+
+    expect(responseBody.message).toBeDefined();
+    expect(responseBody.message).toBe("Invalid email address.");
+  });
+  test("Test register with valid email", async () => {
     const event = eventGenerator({
       method: "post",
       body: {
@@ -14,9 +59,31 @@ describe("Test endpoint /endpoint/userRegister", () => {
       },
     });
 
-    const res = await handler.api(event);
+    const res = await handler.api(event, {});
 
     expect(res).toBeDefined();
-    expect(res.statusCode).toBe(200);
+    expect(res.statusCode).toBe(201);
+  });
+
+  test("Test duplicate user to register", async () => {
+    const event = eventGenerator({
+      method: "post",
+      body: {
+        email: "test@test.test",
+      },
+      pathParametersObject: {
+        functionName: "userRegister",
+      },
+    });
+
+    const res = await handler.api(event, {});
+
+    expect(res).toBeDefined();
+    expect(res.statusCode).toBe(403);
+  });
+  afterAll(async () => {
+    await User.deleteMany();
+
+    mongoose.connection.close();
   });
 });
