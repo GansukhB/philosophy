@@ -16,13 +16,15 @@ async function generateRefreshToken(user) {
 
 function verify(event) {
   const headers = event.headers;
-  const token = headers.authorization || headers.Authorization;
+  const auth = headers.authorization || headers.Authorization;
+  const token = auth.split("Bearer ")[1];
+
   if (!token) {
     throw HTTP_ERROR_401;
   }
 
-  return jwt.verify(token, JWT_SECRET, (err, user) => {
-    if (err) throw HTTP_ERROR_403;
+  return jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) return HTTP_ERROR_403;
     return user;
   });
 }
