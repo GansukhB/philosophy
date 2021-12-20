@@ -3,7 +3,7 @@ on: push
 
 env:
   CI: true
-  MONGODB_HOST: "mongodb://test:test@127.0.0.1:27017/test"
+  MONGODB_HOST: "mongodb://test:test@localhost:27017/test"
 jobs:
   build:
     runs-on: ubuntu-latest
