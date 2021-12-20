@@ -2,6 +2,7 @@ name: CI
 on: push
 
 env:
+  CI: true
   MONGODB_HOST: "mongodb://test:test@127.0.0.1:27017/test"
 jobs:
   build:
