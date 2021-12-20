@@ -7,7 +7,8 @@ import { User } from "../../../common/models/User";
 describe("Test endpoint /endpoint/userRegister", () => {
   beforeAll(async () => {
     //return new Promise((resolve) => {
-    process.env.MONGODB_HOST = "mongodb://127.0.0.1:27017/test";
+    if (!process.env.CI)
+      process.env.MONGODB_HOST = "mongodb://127.0.0.1:27017/test";
     //  resolve();
   });
   test("Test request without email", async () => {
