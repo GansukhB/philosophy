@@ -4,6 +4,7 @@ import userRegister from "./services/userRegister";
 import userLogin from "./services/userLogin";
 import requestOtp from "./services/requestOtp";
 import requestToken from "./services/requestToken";
+import profileUpdate from "./services/profileUpdate";
 
 export async function api(event, context) {
   context.callbackWaitsForEmptyEventLoop = false;
@@ -24,6 +25,9 @@ export async function api(event, context) {
 
     if (functionName === "requestToken") {
       return await requestToken({ event });
+    }
+    if (functionName === "me") {
+      return await profileUpdate({ event });
     }
   } catch (error) {
     return error;
