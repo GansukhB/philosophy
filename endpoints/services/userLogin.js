@@ -21,26 +21,30 @@ export default async function ({ event }) {
 
     try {
       const otpUser = await UserOtp.findOne({
-        userId: otp,
+        otp: otp,
       }).lean();
 
+      console.log('otpUser', otpUser)
+      
       if (!otpUser) {
         return generateResponse(400, {
           message: "invalid login",
         });
       }
 
-      const loginUser = User.findOne({ _id: otpUser.userId }).lean();
+      const loginUser = await User.findOne({ _id: otpUser.userId }).lean();
+
+      console.log('loginUser', loginUser)
 
       if (loginUser) {
         try {
           const accessToken = generateAccessToken({
             email: loginUser.email,
-            name: loginUser.name,
+            userId: loginUser._id,
           });
           const refreshToken = await generateRefreshToken({
             email: loginUser.email,
-            name: loginUser.name,
+            userId: loginUser._id,
           });
 
           return generateResponse(200, {
