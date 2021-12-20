@@ -8,18 +8,19 @@ import { validateEmail } from "../../common/validator";
 
 export default async function ({ event }) {
   const requestBody = event && event.body ? JSON.parse(event.body) : {};
+
   try {
     await connectDb();
     const email = requestBody.email;
     if (!email) {
       // Email validation regex will be created soon!
-      return generateResponse(201, {
-        message: "Email is required",
+      return generateResponse(400, {
+        message: "Email is required.",
       });
     }
     if (!validateEmail(email)) {
-      return generateResponse(201, {
-        message: "Invalid email address",
+      return generateResponse(400, {
+        message: "Invalid email address.",
       });
     }
     try {
@@ -47,7 +48,8 @@ export default async function ({ event }) {
     const subject = "Email хаяг баталгаажуулах код";
     const text = `Таны баталгаажуулах код ${otp}`; // Generated OTP must be sent
     try {
-      if (!process.env.CI) await sendEmail({ to, from, subject, text });
+      if (process.env.NODE_ENV !== "test")
+        await sendEmail({ to, from, subject, text });
     } catch (e) {
       console.log("error email", e);
     }
