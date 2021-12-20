@@ -5,6 +5,7 @@ import userLogin from "./services/userLogin";
 import requestOtp from "./services/requestOtp";
 import requestToken from "./services/requestToken";
 import profileUpdate from "./services/profileUpdate";
+import followUser from "./services/followUser";
 
 export async function api(event, context) {
   context.callbackWaitsForEmptyEventLoop = false;
@@ -28,6 +29,9 @@ export async function api(event, context) {
     }
     if (functionName === "me") {
       return await profileUpdate({ event });
+    }
+    if (functionName === "follow") {
+      return await followUser({ event });
     }
   } catch (error) {
     return error;
