@@ -16,7 +16,7 @@ async function generateRefreshToken(user) {
 }
 
 
-function verify(event, tokenType = 'access') {
+function verify(event) {
 
   const headers = event.headers;
   const auth = headers.authorization || headers.Authorization;
@@ -26,17 +26,10 @@ function verify(event, tokenType = 'access') {
     throw HTTP_ERROR_401;
   }
 
-  if(tokenType === 'access'){
     return jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
       if (err) return HTTP_ERROR_403;
       return user;
     });
-  } else {
-    return jwt.verify(token, process.env.JWT_REFRESH_TOKEN_SECRET, (err, user) => {
-      if (err) return HTTP_ERROR_403;
-      return user;
-    });
-  }
 }
 
 
