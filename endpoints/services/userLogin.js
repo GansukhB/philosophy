@@ -23,7 +23,7 @@ export default async function ({ event }) {
       const otpUser = await UserOtp.findOne({
         otp: otp,
       }).lean();
-      
+
       if (!otpUser) {
         return generateResponse(400, {
           message: "invalid login",

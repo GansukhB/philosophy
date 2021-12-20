@@ -15,7 +15,6 @@ async function generateRefreshToken(user) {
 }
 
 function verify(event) {
-
   const headers = event.headers;
   const auth = headers.authorization || headers.Authorization;
   const token = auth.split("Bearer ")[1];
@@ -29,6 +28,5 @@ function verify(event) {
     return user;
   });
 }
-
 
 export { generateAccessToken, generateRefreshToken, verify };
