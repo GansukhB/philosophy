@@ -43,6 +43,7 @@ provider:
     REDIS: ${self:custom.secrets.REDIS}
     REDIS_DB: ${self:custom.secrets.REDIS_DB}
     EMAIL_SENDER: ${self:custom.secrets.EMAIL_SENDER}
+    BUCKET_NAME: ${self:custom.secrets.BUCKET_NAME}
 
   iamRoleStatements:
     - Effect: Allow
