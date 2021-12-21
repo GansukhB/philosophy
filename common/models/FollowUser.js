@@ -6,12 +6,11 @@ const FollowSchema = new mongoose.Schema(
         type: mongoose.SchemaTypes.ObjectId,
         ref: "User",
         required: true,
-        unique: true,
+
     },
     followingId : {
         type: mongoose.SchemaTypes.ObjectId,
         required: true,
-        unique: true,
     },
   },
   {
@@ -19,11 +18,13 @@ const FollowSchema = new mongoose.Schema(
   }
 );
 
+FollowSchema.index({ followerId: 1, followingId: 1 }, { unique: true })
+
 let Follow;
 try {
-  Follow = mongoose.model("User");
+  Follow = mongoose.model("Follow");
 } catch (e) {
-    Follow = mongoose.model("User", FollowSchema);
+    Follow = mongoose.model("Follow", FollowSchema);
 }
 
 export { Follow };

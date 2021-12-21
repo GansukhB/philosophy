@@ -9,20 +9,41 @@ export default async function ({event}) {
     const requestBody = event && event.body ? JSON.parse(event.body) : {};
     try {
         await connectDb();
-        const currentUser = verify(event);
-        console.log(currentUser._id);
         const { userId } = requestBody
+        const currentUser = verify(event, "access");
         try {
-            const userIsExist = await User.findOne({
+            const followingUser = await User.findOne({
               _id: userId,
             }).lean();
-      
-            if(!userIsExist) {
+            if(followingUser._id == currentUser.userId) {
+              return generateResponse(404, {
+                message: "not allowed request",
+              });
+            }
+            if(!followingUser) {
                 return generateResponse(404, {
                     message: "user not found",
                   });
             }
-
+            try {
+                if(currentUser) {
+                  try {
+                    await Follow.create({
+                      followerId : currentUser.userId,
+                      followingId : followingUser._id
+                    })
+                  } catch(e) {
+                    return generateResponse(200, {
+                      message: "followed",
+                    }); 
+                  }
+                return generateResponse(200, {
+                  message: "followed",
+                });
+              }
+            } catch (e) {
+              console.log("update user data failed",e)
+            }
           } catch (e) {
             console.log("error during selecting from mongodb", e);
           }        
@@ -30,5 +51,4 @@ export default async function ({event}) {
         console.log(e);
         throw HTTP_ERROR_400;
     }
-    console.log(requestBody)
 }
