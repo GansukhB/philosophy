@@ -35,6 +35,7 @@ export default async function ({ event }) {
         });
       }
     } catch (e) {
+      /* istanbul ignore next */
       console.log("error during selecting from mongodb", e);
     }
 
@@ -48,16 +49,20 @@ export default async function ({ event }) {
     const subject = "Email хаяг баталгаажуулах код";
     const text = `Таны баталгаажуулах код ${otp}`; // Generated OTP must be sent
     try {
+      /* istanbul ignore next */
       if (process.env.NODE_ENV !== "test")
         await sendEmail({ to, from, subject, text });
     } catch (e) {
+      /* istanbul ignore next */
       console.log("error email", e);
     }
     return generateResponse(201, {
       message: "User created",
     });
   } catch (e) {
+    /* istanbul ignore next */
     console.log(e);
+    /* istanbul ignore next */
     throw HTTP_ERROR_400;
   }
 }

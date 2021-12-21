@@ -11,6 +11,7 @@ export default async function () {
       });
     }
   } catch (e) {
+    /* istanbul ignore next */
     console.log(e);
   }
 }

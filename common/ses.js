@@ -3,6 +3,7 @@ const SES = new AWS.SES();
 
 import { HTTP_ERROR_400 } from "./statuses";
 
+/* istanbul ignore next */
 export default async function ({
   to,
   from = "philosophy.mn@gmail.com",
