@@ -14,7 +14,6 @@ describe("Test endpoint /endpoint/userRegister", () => {
   test("Test request without email", async () => {
     const event = eventGenerator({
       method: "post",
-      body: {},
       pathParametersObject: {
         functionName: "userRegister",
       },
