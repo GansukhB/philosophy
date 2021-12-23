@@ -3,13 +3,15 @@ const validators = require("../../testUtils/validators");
 const handler = require("../../../endpoints/handler");
 import mongoose from "mongoose";
 import { User } from "../../../common/models/User";
+import connectDb from "../../../common/db";
 
 describe("Test endpoint /endpoint/userRegister", () => {
   beforeAll(async () => {
     //return new Promise((resolve) => {
     if (!process.env.CI)
       process.env.MONGODB_HOST = "mongodb://127.0.0.1:27017/test";
-    //  resolve();
+    await connectDb();
+    await User.deleteMany();
   });
   test("Test request without email", async () => {
     const event = eventGenerator({

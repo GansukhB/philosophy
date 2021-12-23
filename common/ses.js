@@ -27,7 +27,7 @@ export default async function ({
   };
 
   try {
-    await SES.sendEmail(params).promise();
+    if (process.env.NODE_ENV !== "test") await SES.sendEmail(params).promise();
     return true;
   } catch (error) {
     console.log("error sending email ", error);
