@@ -8,7 +8,6 @@ import { verify } from "../../common/jwt";
 export default async function ({event}) {
     const requestBody = event && event.body ? JSON.parse(event.body) : {};
     const { userId } = requestBody
-    console.log(event)
     if(userId) {
       try {
           await connectDb();

@@ -10,7 +10,7 @@ import {generateAccessToken} from '../../../common/jwt'
 
 
 describe("Test endpoint /endpoint/follow", () => {
-  let testUser, testOtp, accessToken;
+  let testUser, testUserTwo, accessToken;
   beforeAll(async () => {
     if (!process.env.CI) {
       process.env.MONGODB_HOST = "mongodb://127.0.0.1:27017/test";
@@ -23,9 +23,12 @@ describe("Test endpoint /endpoint/follow", () => {
     })
     testUser = testUser.toObject()
     testUser.userId = testUser._id.toString()
-    console.log(testUser)
+    testUserTwo = await User.create({
+      email: "testTwo@test.test",
+    })
+    testUserTwo = testUserTwo.toObject()
+    testUserTwo.userId = testUserTwo._id.toString()
     accessToken = generateAccessToken(testUser)
-    console.log(accessToken)
   });
   test("Test request without userId", async () => {
     const event = eventGenerator({
@@ -34,7 +37,7 @@ describe("Test endpoint /endpoint/follow", () => {
         functionName: "follow",
       },
       body: {
-        userId : testUser.userId
+        // userId : testUserTwo.userId
       },
       headers : {
         Authorization : accessToken
@@ -50,7 +53,7 @@ describe("Test endpoint /endpoint/follow", () => {
     const event = eventGenerator({
       method: "post",
       body: {
-        userId : testUser.userId
+        userId : testUserTwo.userId
       },
       headers : {
         Authorization : accessToken
@@ -69,6 +72,20 @@ describe("Test endpoint /endpoint/follow", () => {
     expect(responseBody.message).toBeDefined();
     expect(responseBody.message).toBe("followed");
   });
+  // test("Test following user is exist", async () => {
+  //   const event = eventGenerator({
+  //     method: "post",
+  //     pathParametersObject: {
+  //       functionName: "follow",
+  //     },
+  //     body: {
+  //       userId : testUserTwo.userId
+  //     },
+  //     headers : {
+  //       Authorization : accessToken
+  //     }
+  //   });
+  // })
   afterAll(async () => {
     await User.deleteMany();
 
