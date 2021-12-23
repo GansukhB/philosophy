@@ -28,7 +28,7 @@ export default async function ({ event }) {
           to: existingUser.email,
           from: process.env.EMAIL_SENDER,
           subject: "Таны нэг удаагийн нууц үг",
-          text: `Таны удаагийн нууц үг: ${otp}`,
+          text: `Таны нэг удаагийн нууц үг: ${otp}`,
         });
         if (emailResponse) {
           return generateResponse(200, {
