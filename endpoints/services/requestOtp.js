@@ -12,7 +12,7 @@ export default async function ({ event }) {
     const email = requestBody.email;
     if (!email) {
       // Email validation regex will be created soon!
-      return generateResponse(201, {
+      return generateResponse(400, {
         message: "Email is required",
       });
     }
@@ -24,17 +24,22 @@ export default async function ({ event }) {
       // If user with given email exists, It will send OTP and return 200
       if (existingUser) {
         const otp = await generateOtpForUser(existingUser._id);
-        const emailResponse = await sendEmail({
+        let emailResponse;
+        /* istanbul ignore next */
+
+        emailResponse = await sendEmail({
           to: existingUser.email,
           from: process.env.EMAIL_SENDER,
           subject: "Таны нэг удаагийн нууц үг",
-          text: `Таны удаагийн нууц үг: ${otp}`,
+          text: `Таны нэг удаагийн нууц үг: ${otp}`,
         });
+        /* istanbul ignore next */
         if (emailResponse) {
           return generateResponse(200, {
             message: "email sent",
           });
         } else {
+          /* istanbul ignore next */
           return generateResponse(501, {
             message: "Couldn't send email",
           });
@@ -45,26 +50,13 @@ export default async function ({ event }) {
         });
       }
     } catch (e) {
+      /* istanbul ignore next */
       console.log("error during selecting from mongodb", e);
     }
-
-    const user = await User.create({
-      email: email,
-    });
-    const to = user.email;
-    const from = "bganaa2009@gmail.com";
-    const subject = "Email хаяг баталгаажуулах код";
-    const text = "text"; // Generated OTP must be sent
-    try {
-      await sendEmail({ to, from, subject, text });
-    } catch (e) {
-      console.log("error email", e);
-    }
-    return generateResponse(201, {
-      message: "User created",
-    });
   } catch (e) {
+    /* istanbul ignore next */
     console.log(e);
+    /* istanbul ignore next */
     throw HTTP_ERROR_400;
   }
 }

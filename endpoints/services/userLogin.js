@@ -20,19 +20,21 @@ export default async function ({ event }) {
     }
 
     try {
-      const otpUser = await UserOtp.findOne({
-        otp: otp,
+      const loginUser = await User.findOne({
+        email: email,
       }).lean();
 
-      if (!otpUser) {
-        return generateResponse(400, {
-          message: "invalid login",
+      if (!loginUser) {
+        return generateResponse(404, {
+          message: "User not found",
         });
       }
 
-      const loginUser = await User.findOne({ _id: otpUser.userId }).lean();
-
-      if (loginUser) {
+      const userOtp = await UserOtp.findOne({
+        userId: loginUser._id,
+        otp: otp,
+      }).lean();
+      if (userOtp) {
         try {
           const accessToken = generateAccessToken({
             email: loginUser.email,
@@ -48,16 +50,26 @@ export default async function ({ event }) {
             refreshToken,
           });
         } catch (e) {
+          /*istanbul ignore next */
           console.log("error during genereting token", e);
+          /*istanbul ignore next */
           throw HTTP_ERROR_400;
         }
+      } else {
+        return generateResponse(400, {
+          message: "invalid login",
+        });
       }
     } catch (e) {
+      /*istanbul ignore next */
       console.log("error during selecting from mongodb", e);
+      /*istanbul ignore next */
       throw HTTP_ERROR_404;
     }
   } catch (e) {
+    /*istanbul ignore next */
     console.log("error during connecting to mongodb", e);
+    /*istanbul ignore next */
     throw HTTP_ERROR_400;
   }
 }

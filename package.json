@@ -47,6 +47,7 @@
     ],
     "testMatch": [
       "<rootDir>/tests/endpoints/*.js",
+      "<rootDir>/tests/endpoints/**/*.js",
       "<rootDir>/tests/common/*.js"
     ],
     "collectCoverageFrom": [

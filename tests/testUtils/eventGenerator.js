@@ -5,10 +5,11 @@ const APIGatewayRequest = ({
   queryStringObject,
   pathParametersObject,
   stageVariables = null,
+  headers,
 }) => {
   const request = {
     body: body ? JSON.stringify(body) : null,
-    headers: {},
+    headers: headers,
     multiValueHeaders: {},
     httpMethod: method,
     isBase64Encoded: false,

@@ -3,6 +3,7 @@ const SES = new AWS.SES();
 
 import { HTTP_ERROR_400 } from "./statuses";
 
+/* istanbul ignore next */
 export default async function ({
   to,
   from = "philosophy.mn@gmail.com",
@@ -26,7 +27,7 @@ export default async function ({
   };
 
   try {
-    await SES.sendEmail(params).promise();
+    if (process.env.NODE_ENV !== "test") await SES.sendEmail(params).promise();
     return true;
   } catch (error) {
     console.log("error sending email ", error);

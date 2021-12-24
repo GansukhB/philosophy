@@ -8,18 +8,19 @@ import { validateEmail } from "../../common/validator";
 
 export default async function ({ event }) {
   const requestBody = event && event.body ? JSON.parse(event.body) : {};
+
   try {
     await connectDb();
     const email = requestBody.email;
     if (!email) {
       // Email validation regex will be created soon!
-      return generateResponse(201, {
-        message: "Email is required",
+      return generateResponse(400, {
+        message: "Email is required.",
       });
     }
     if (!validateEmail(email)) {
-      return generateResponse(201, {
-        message: "Invalid email address",
+      return generateResponse(400, {
+        message: "Invalid email address.",
       });
     }
     try {
@@ -34,6 +35,7 @@ export default async function ({ event }) {
         });
       }
     } catch (e) {
+      /* istanbul ignore next */
       console.log("error during selecting from mongodb", e);
     }
 
@@ -47,15 +49,20 @@ export default async function ({ event }) {
     const subject = "Email хаяг баталгаажуулах код";
     const text = `Таны баталгаажуулах код ${otp}`; // Generated OTP must be sent
     try {
-      await sendEmail({ to, from, subject, text });
+      /* istanbul ignore next */
+      if (process.env.NODE_ENV !== "test")
+        await sendEmail({ to, from, subject, text });
     } catch (e) {
+      /* istanbul ignore next */
       console.log("error email", e);
     }
     return generateResponse(201, {
       message: "User created",
     });
   } catch (e) {
+    /* istanbul ignore next */
     console.log(e);
+    /* istanbul ignore next */
     throw HTTP_ERROR_400;
   }
 }
