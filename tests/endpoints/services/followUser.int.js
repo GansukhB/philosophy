@@ -3,10 +3,8 @@ const handler = require("../../../endpoints/handler");
 import connectDb from "../../../common/db";
 import mongoose from "mongoose";
 import { User } from "../../../common/models/User";
-import requestOtp from "../../../endpoints/services/requestOtp";
-import userLogin from "../../../endpoints/services/userLogin";
-import { UserOtp } from "../../../common/models/UserOtp";
 import { generateAccessToken } from "../../../common/jwt";
+import { Follow } from "../../../common/models/FollowUser";
 
 describe("Test endpoint /endpoint/follow", () => {
   let testUser, testUserTwo, accessToken;
@@ -71,23 +69,57 @@ describe("Test endpoint /endpoint/follow", () => {
     expect(responseBody.message).toBeDefined();
     expect(responseBody.message).toBe("followed");
   });
-  // test("Test following user is exist", async () => {
-  //   const event = eventGenerator({
-  //     method: "post",
-  //     pathParametersObject: {
-  //       functionName: "follow",
-  //     },
-  //     body: {
-  //       userId : testUserTwo.userId
-  //     },
-  //     headers : {
-  //       Authorization : accessToken
-  //     }
-  //   });
-  // })
+  test("Test user following own account", async () => {
+    const event = eventGenerator({
+      method: "post",
+      pathParametersObject: {
+        functionName: "follow",
+      },
+      body: {
+        userId : testUser.userId
+      },
+      headers : {
+        Authorization : accessToken
+      }
+    });
+    const res = await handler.api(event, {});
+
+    expect(res).toBeDefined();
+    expect(res.statusCode).toBe(404);
+
+    const responseBody = JSON.parse(res.body);
+    expect(responseBody.message).toBeDefined();
+    expect(responseBody.message).toBe("not allowed request");
+  })
+  test("Test following user doesn't exist", async () => {
+    let followingUserId = mongoose.Types.ObjectId();
+    const event = eventGenerator({
+      method: "post",
+      pathParametersObject: {
+        functionName: "follow",
+      },
+      body: {
+        userId : followingUserId
+      },
+      headers : {
+        Authorization : accessToken
+      }
+    });
+    const followingUser = await User.findOne({
+      _id: followingUserId,
+    }).lean();
+    const res = await handler.api(event, {});
+
+    expect(followingUser).toBe(null);
+    expect(res.statusCode).toBe(404);
+
+    const responseBody = JSON.parse(res.body);
+    expect(responseBody.message).toBeDefined();
+    expect(responseBody.message).toBe("user not found");
+  })
   afterAll(async () => {
     await User.deleteMany();
-
+    await Follow.deleteMany();
     mongoose.connection.close();
   });
 });

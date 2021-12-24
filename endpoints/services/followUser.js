@@ -16,15 +16,15 @@ export default async function ({event}) {
               const followingUser = await User.findOne({
                 _id: userId,
               }).lean();
-              if(followingUser._id == currentUser.userId) {
-                return generateResponse(404, {
-                  message: "not allowed request",
-                });
-              }
               if(!followingUser) {
                   return generateResponse(404, {
                       message: "user not found",
                     });
+              }
+              if(followingUser._id == currentUser.userId) {
+                return generateResponse(404, {
+                  message: "not allowed request",
+                });
               }
               try {
                   if(currentUser) {
@@ -43,9 +43,11 @@ export default async function ({event}) {
                   });
                 }
               } catch (e) {
+                /* istanbul ignore next*/
                 console.log("update user data failed",e)
               }
             } catch (e) {
+              /* istanbul ignore next*/
               console.log("error during selecting from mongodb", e);
             }        
       } catch (e) {
