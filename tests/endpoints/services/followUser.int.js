@@ -3,32 +3,31 @@ const handler = require("../../../endpoints/handler");
 import connectDb from "../../../common/db";
 import mongoose from "mongoose";
 import { User } from "../../../common/models/User";
-import requestOtp from "../../../endpoints/services/requestOtp"
-import userLogin from "../../../endpoints/services/userLogin"
+import requestOtp from "../../../endpoints/services/requestOtp";
+import userLogin from "../../../endpoints/services/userLogin";
 import { UserOtp } from "../../../common/models/UserOtp";
-import {generateAccessToken} from '../../../common/jwt'
-
+import { generateAccessToken } from "../../../common/jwt";
 
 describe("Test endpoint /endpoint/follow", () => {
   let testUser, testUserTwo, accessToken;
   beforeAll(async () => {
     if (!process.env.CI) {
       process.env.MONGODB_HOST = "mongodb://127.0.0.1:27017/test";
-      process.env.JWT_SECRET = "ast";
     }
+    process.env.JWT_SECRET = "ast";
     await connectDb();
     await User.deleteMany();
     testUser = await User.create({
       email: "test@test.test",
-    })
-    testUser = testUser.toObject()
-    testUser.userId = testUser._id.toString()
+    });
+    testUser = testUser.toObject();
+    testUser.userId = testUser._id.toString();
     testUserTwo = await User.create({
       email: "testTwo@test.test",
-    })
-    testUserTwo = testUserTwo.toObject()
-    testUserTwo.userId = testUserTwo._id.toString()
-    accessToken = generateAccessToken(testUser)
+    });
+    testUserTwo = testUserTwo.toObject();
+    testUserTwo.userId = testUserTwo._id.toString();
+    accessToken = generateAccessToken(testUser);
   });
   test("Test request without userId", async () => {
     const event = eventGenerator({
@@ -39,9 +38,9 @@ describe("Test endpoint /endpoint/follow", () => {
       body: {
         // userId : testUserTwo.userId
       },
-      headers : {
-        Authorization : accessToken
-      }
+      headers: {
+        Authorization: accessToken,
+      },
     });
     const res = await handler.api(event, {});
 
@@ -53,10 +52,10 @@ describe("Test endpoint /endpoint/follow", () => {
     const event = eventGenerator({
       method: "post",
       body: {
-        userId : testUserTwo.userId
+        userId: testUserTwo.userId,
       },
-      headers : {
-        Authorization : accessToken
+      headers: {
+        Authorization: accessToken,
       },
       pathParametersObject: {
         functionName: "follow",
