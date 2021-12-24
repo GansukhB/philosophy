@@ -13,6 +13,7 @@ const TopicSchema = new mongoose.Schema(
 			maxlength: 255,
 			index: true,
 		},
+		createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 		coverImage: {
 			type: String,
 			maxlength: 1000,
