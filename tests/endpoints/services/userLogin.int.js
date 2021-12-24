@@ -12,12 +12,15 @@ dotenv.config();
 describe("Test endpoint /endpoint/userLogin", () => {
   let user, userOtp;
   beforeAll(async () => {
-    if (!process.env.CI) {
+    if (!process.env.CI)
       process.env.MONGODB_HOST = "mongodb://127.0.0.1:27017/test";
-      process.env.JWT_SECRET = "asd";
-      process.env.JWT_REFRESH_TOKEN_SECRET = "asdasdf";
-    }
+
+    process.env.JWT_REFRESH_TOKEN_SECRET = "asdasdf";
+    process.env.JWT_SECRET = "asd";
+
     await connectDb();
+    await User.deleteMany();
+    await UserOtp.deleteMany();
 
     user = await User.create({
       email: "test.login@gmail.com",
@@ -33,9 +36,6 @@ describe("Test endpoint /endpoint/userLogin", () => {
       method: "post",
       pathParametersObject: {
         functionName: "userLogin",
-      },
-      body: {
-        email: "",
       },
     });
 
@@ -113,7 +113,8 @@ describe("Test endpoint /endpoint/userLogin", () => {
   });
 
   afterAll(async () => {
-    // await User.deleteMany();
+    await User.deleteMany();
+    await UserOtp.deleteMany();
 
     mongoose.connection.close();
   });

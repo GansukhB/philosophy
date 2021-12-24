@@ -4,6 +4,7 @@ const handler = require("../../../endpoints/handler");
 import mongoose from "mongoose";
 import { User } from "../../../common/models/User";
 import connectDb from "../../../common/db";
+import { UserOtp } from "../../../common/models/UserOtp";
 
 describe("Test endpoint /endpoint/userRegister", () => {
   beforeAll(async () => {
@@ -12,6 +13,7 @@ describe("Test endpoint /endpoint/userRegister", () => {
       process.env.MONGODB_HOST = "mongodb://127.0.0.1:27017/test";
     await connectDb();
     await User.deleteMany();
+    await UserOtp.deleteMany();
   });
   test("Test request without email", async () => {
     const event = eventGenerator({
@@ -85,6 +87,7 @@ describe("Test endpoint /endpoint/userRegister", () => {
   });
   afterAll(async () => {
     await User.deleteMany();
+    await UserOtp.deleteMany();
 
     mongoose.connection.close();
   });
