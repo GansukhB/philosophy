@@ -15,6 +15,7 @@ describe("Test endpoint /endpoint/follow", () => {
     process.env.JWT_SECRET = "ast";
     await connectDb();
     await User.deleteMany();
+    await Follow.deleteMany();
     testUser = await User.create({
       email: "test@test.test",
     });
