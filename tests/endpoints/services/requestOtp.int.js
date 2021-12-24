@@ -1,23 +1,53 @@
 const eventGenerator = require("../../testUtils/eventGenerator");
-const validators = require("../../testUtils/validators");
 const handler = require("../../../endpoints/handler");
-import mongoose from "mongoose";
 import { User } from "../../../common/models/User";
+import { UserOtp } from "../../../common/models/UserOtp";
+import mongoose from "mongoose";
 import connectDb from "../../../common/db";
-
-describe("Test endpoint /endpoint/userRegister", () => {
+//non existing email
+//non requesting otp
+describe("Test endpoint /endpoint/requestOtp", () => {
+  var testUser;
   beforeAll(async () => {
-    //return new Promise((resolve) => {
     if (!process.env.CI)
       process.env.MONGODB_HOST = "mongodb://127.0.0.1:27017/test";
     await connectDb();
     await User.deleteMany();
+    await UserOtp.deleteMany();
+    testUser = await User.create({
+      email: "test@test.test",
+    });
   });
-  test("Test request without email", async () => {
+  test("Test request send email ", async () => {
+    const event = eventGenerator({
+      method: "post",
+      body: {
+        email: testUser.email,
+      },
+      pathParametersObject: {
+        functionName: "requestOtp",
+      },
+    });
+    const res = await handler.api(event, {});
+
+    expect(res).toBeDefined();
+    expect(res.statusCode).toBe(200);
+
+    const responseBody = JSON.parse(res.body);
+
+    expect(responseBody.message).toBeDefined();
+    expect(responseBody.message).toBe("email sent");
+    const userOtp = await UserOtp.findOne({
+      userId: testUser._id,
+    });
+    expect(userOtp).toBeDefined();
+    expect(userOtp).not.toBe(null);
+  });
+  test("Test request non-existing body ", async () => {
     const event = eventGenerator({
       method: "post",
       pathParametersObject: {
-        functionName: "userRegister",
+        functionName: "requestOtp",
       },
     });
     const res = await handler.api(event, {});
@@ -28,16 +58,16 @@ describe("Test endpoint /endpoint/userRegister", () => {
     const responseBody = JSON.parse(res.body);
 
     expect(responseBody.message).toBeDefined();
-    expect(responseBody.message).toBe("Email is required.");
+    expect(responseBody.message).toBe("Email is required");
   });
-  test("Test request with invalid email", async () => {
+  test("Test request non-existing email ", async () => {
     const event = eventGenerator({
       method: "post",
       body: {
-        email: "invalid.com",
+        email: "no-exist@test.com",
       },
       pathParametersObject: {
-        functionName: "userRegister",
+        functionName: "requestOtp",
       },
     });
     const res = await handler.api(event, {});
@@ -48,43 +78,11 @@ describe("Test endpoint /endpoint/userRegister", () => {
     const responseBody = JSON.parse(res.body);
 
     expect(responseBody.message).toBeDefined();
-    expect(responseBody.message).toBe("Invalid email address.");
-  });
-  test("Test register with valid email", async () => {
-    const event = eventGenerator({
-      method: "post",
-      body: {
-        email: "test@test.test",
-      },
-      pathParametersObject: {
-        functionName: "userRegister",
-      },
-    });
-
-    const res = await handler.api(event, {});
-
-    expect(res).toBeDefined();
-    expect(res.statusCode).toBe(201);
-  });
-
-  test("Test duplicate user to register", async () => {
-    const event = eventGenerator({
-      method: "post",
-      body: {
-        email: "test@test.test",
-      },
-      pathParametersObject: {
-        functionName: "userRegister",
-      },
-    });
-
-    const res = await handler.api(event, {});
-
-    expect(res).toBeDefined();
-    expect(res.statusCode).toBe(403);
+    expect(responseBody.message).toBe("user doesnt exists");
   });
   afterAll(async () => {
     await User.deleteMany();
+    await UserOtp.deleteMany();
 
     mongoose.connection.close();
   });
