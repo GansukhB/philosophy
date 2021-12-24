@@ -5,6 +5,7 @@ import requestOtp from "./services/requestOtp";
 import requestToken from "./services/requestToken";
 import profileUpdate from "./services/profileUpdate";
 import followUser from "./services/followUser";
+import topicSubscription from "./services/topicSubscription"
 
 export async function api(event, context) {
   context.callbackWaitsForEmptyEventLoop = false;
@@ -28,6 +29,9 @@ export async function api(event, context) {
         return generateResponse(404, {
           message: "not found",
         });
+    }
+    if (functionName === "topicSubscription") {
+      return await topicSubscription({ event })
     }
   } catch (error) {
     /* istanbul ignore next */
