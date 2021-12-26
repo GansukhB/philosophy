@@ -1,7 +1,4 @@
 import responseGenerator from "../../common/response";
-import setupTestEnv from "../testUtils/setupEnvironment";
-
-setupTestEnv();
 
 describe("Testing response generator", () => {
   test("Generate response with status code 200", async () => {

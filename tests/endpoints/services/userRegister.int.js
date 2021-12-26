@@ -1,17 +1,15 @@
 const eventGenerator = require("../../testUtils/eventGenerator");
 const validators = require("../../testUtils/validators");
 const handler = require("../../../endpoints/handler");
-import mongoose from "mongoose";
-import { User } from "../../../common/models/User";
-import connectDb from "../../../common/db";
+
+import {
+  setupEnvironment,
+  clearDatabase,
+} from "../../testUtils/setupEnvironment";
 
 describe("Test endpoint /endpoint/userRegister", () => {
   beforeAll(async () => {
-    //return new Promise((resolve) => {
-    if (!process.env.CI)
-      process.env.MONGODB_HOST = "mongodb://127.0.0.1:27017/test";
-    await connectDb();
-    await User.deleteMany();
+    await setupEnvironment();
   });
   test("Test request without email", async () => {
     const event = eventGenerator({
@@ -84,8 +82,6 @@ describe("Test endpoint /endpoint/userRegister", () => {
     expect(res.statusCode).toBe(403);
   });
   afterAll(async () => {
-    await User.deleteMany();
-
-    mongoose.connection.close();
+    await clearDatabase();
   });
 });

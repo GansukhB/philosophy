@@ -1,4 +1,3 @@
-import { User } from "../common/models/User";
 import generateResponse from "../common/response";
 import userRegister from "./services/userRegister";
 import userLogin from "./services/userLogin";
@@ -12,28 +11,26 @@ export async function api(event, context) {
   try {
     const functionName = event.pathParameters.functionName;
 
-    if (functionName === "userRegister") {
-      return await userRegister({ event });
-    }
-
-    if (functionName === "userLogin") {
-      return await userLogin({ event });
-    }
-
-    if (functionName === "requestOtp") {
-      return await requestOtp({ event });
-    }
-
-    if (functionName === "requestToken") {
-      return await requestToken({ event });
-    }
-    if (functionName === "me") {
-      return await profileUpdate({ event });
-    }
-    if (functionName === "follow") {
-      return await followUser({ event });
+    switch (functionName) {
+      case "userRegister":
+        return await userRegister({ event });
+      case "userLogin":
+        return await userLogin({ event });
+      case "requestOtp":
+        return await requestOtp({ event });
+      case "requestToken":
+        return await requestToken({ event });
+      case "me":
+        return await profileUpdate({ event });
+      case "follow":
+        return await followUser({ event });
+      default:
+        return generateResponse(404, {
+          message: "not found",
+        });
     }
   } catch (error) {
+    /* istanbul ignore next */
     return error;
   }
 }

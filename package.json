@@ -6,7 +6,10 @@
   "scripts": {
     "start": "npx serverless offline --httpPort 4000 --stage local",
     "deploy": "npx serverless deploy --stage development",
-    "test": "npx jest",
+    "test": "npx jest --runInBand",
+    "unit": "npx jest unit --runInBand",
+    "int": "npx jest int --runInBand",
+    "cov": "npx jest --runInBand --coverage",
     "eslint": "npx eslint --ext .jsx,.js common/ endpoints/"
   },
   "repository": {
