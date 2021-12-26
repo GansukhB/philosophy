@@ -13,31 +13,35 @@ export default async function ({ event }) {
     const name = requestBody.name;
     const avatar = requestBody.avatar;
     if (!name && !avatar) {
-      return generateResponse(201, {
+      return generateResponse(400, {
         message: "Name or Avatar is required",
       });
     }
 
     try {
-      const currentUser = verify(event, "access");
+      const currentUser = verify(event);
 
-      if (currentUser) {
-        try {
-          await User.findOneAndUpdate({ _id: currentUser.userId }, requestBody);
-          return generateResponse(200, {
-            message: "Successfully updated",
-          });
-        } catch (e) {
-          console.log("error during updating user", e);
-          throw HTTP_ERROR_400;
-        }
+      try {
+        await User.findOneAndUpdate({ _id: currentUser.userId }, requestBody);
+        return generateResponse(200, {
+          message: "Successfully updated",
+        });
+      } catch (e) {
+        /* istanbul ignore next */
+        console.log("error during updating user", e);
+        /* istanbul ignore next */
+        throw HTTP_ERROR_400;
       }
     } catch (e) {
+      /* istanbul ignore next */
       console.log("error during verifying access token", e);
+      /* istanbul ignore next */
       throw HTTP_ERROR_400;
     }
   } catch (e) {
+    /* istanbul ignore next */
     console.log("error during connecting to mongodb", e);
+    /* istanbul ignore next */
     throw HTTP_ERROR_400;
   }
 }

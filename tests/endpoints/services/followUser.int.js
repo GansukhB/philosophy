@@ -5,17 +5,15 @@ import mongoose from "mongoose";
 import { User } from "../../../common/models/User";
 import { generateAccessToken } from "../../../common/jwt";
 import { Follow } from "../../../common/models/FollowUser";
+import {
+  setupEnvironment,
+  clearDatabase,
+} from "../../testUtils/setupEnvironment";
 
 describe("Test endpoint /endpoint/follow", () => {
   let testUser, testUserTwo, accessToken;
   beforeAll(async () => {
-    if (!process.env.CI) {
-      process.env.MONGODB_HOST = "mongodb://127.0.0.1:27017/test";
-    }
-    process.env.JWT_SECRET = "ast";
-    await connectDb();
-    await User.deleteMany();
-    await Follow.deleteMany();
+    await setupEnvironment();
     testUser = await User.create({
       email: "test@test.test",
     });
@@ -77,21 +75,21 @@ describe("Test endpoint /endpoint/follow", () => {
         functionName: "follow",
       },
       body: {
-        userId : testUser.userId
+        userId: testUser.userId,
       },
-      headers : {
-        Authorization : accessToken
-      }
+      headers: {
+        Authorization: accessToken,
+      },
     });
     const res = await handler.api(event, {});
 
     expect(res).toBeDefined();
-    expect(res.statusCode).toBe(404);
+    expect(res.statusCode).toBe(400);
 
     const responseBody = JSON.parse(res.body);
     expect(responseBody.message).toBeDefined();
     expect(responseBody.message).toBe("not allowed request");
-  })
+  });
   test("Test following user doesn't exist", async () => {
     let followingUserId = mongoose.Types.ObjectId();
     const event = eventGenerator({
@@ -100,11 +98,11 @@ describe("Test endpoint /endpoint/follow", () => {
         functionName: "follow",
       },
       body: {
-        userId : followingUserId
+        userId: followingUserId,
       },
-      headers : {
-        Authorization : accessToken
-      }
+      headers: {
+        Authorization: accessToken,
+      },
     });
     const followingUser = await User.findOne({
       _id: followingUserId,
@@ -117,10 +115,8 @@ describe("Test endpoint /endpoint/follow", () => {
     const responseBody = JSON.parse(res.body);
     expect(responseBody.message).toBeDefined();
     expect(responseBody.message).toBe("user not found");
-  })
+  });
   afterAll(async () => {
-    await User.deleteMany();
-    await Follow.deleteMany();
-    mongoose.connection.close();
+    await clearDatabase();
   });
 });
