@@ -1,11 +1,8 @@
 const handler = require("../../../endpoints/handler");
 const dotenv = require("dotenv");
 import EventGenerator from "../../testUtils/eventGenerator";
-import mongoose from "mongoose";
 import { UserOtp } from "../../../common/models/UserOtp";
 import { User } from "../../../common/models/User";
-import connectDb from "../../../common/db";
-import { generateAccessToken, generateRefreshToken } from "../../../common/jwt";
 import {
   setupEnvironment,
   clearDatabase,

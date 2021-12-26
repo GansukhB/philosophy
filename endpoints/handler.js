@@ -3,6 +3,8 @@ import userRegister from "./services/userRegister";
 import userLogin from "./services/userLogin";
 import requestOtp from "./services/requestOtp";
 import requestToken from "./services/requestToken";
+import profileUpdate from "./services/profileUpdate";
+import followUser from "./services/followUser";
 
 export async function api(event, context) {
   context.callbackWaitsForEmptyEventLoop = false;
@@ -18,6 +20,10 @@ export async function api(event, context) {
         return await requestOtp({ event });
       case "requestToken":
         return await requestToken({ event });
+      case "me":
+        return await profileUpdate({ event });
+      case "follow":
+        return await followUser({ event });
       default:
         return generateResponse(404, {
           message: "not found",

@@ -2,10 +2,10 @@ const APIGatewayRequest = ({
   body,
   method,
   path = "",
-  headers,
   queryStringObject,
   pathParametersObject,
   stageVariables = null,
+  headers,
 }) => {
   const request = {
     body: body ? JSON.stringify(body) : null,
