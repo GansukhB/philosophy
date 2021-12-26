@@ -2,13 +2,14 @@ const APIGatewayRequest = ({
   body,
   method,
   path = "",
+  headers,
   queryStringObject,
   pathParametersObject,
   stageVariables = null,
 }) => {
   const request = {
     body: body ? JSON.stringify(body) : null,
-    headers: {},
+    headers: headers ? headers : null,
     multiValueHeaders: {},
     httpMethod: method,
     isBase64Encoded: false,
