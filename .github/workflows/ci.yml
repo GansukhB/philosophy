@@ -19,10 +19,10 @@ jobs:
       - name: Install modules
         run: npm install
       - name: Run unit tests
-        run: npm test unit
+        run: npm run unit
       - name: Run integration tests
-        run: npm test int
+        run: npm run int
       - name: Run coverage test
-        run: npm test -- --coverage
+        run: npm run cov
       - name: Run eslint
         run: npm run eslint

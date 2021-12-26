@@ -13,7 +13,6 @@ export async function api(event, context) {
     if (functionName === "userRegister") {
       return await userRegister({ event });
     }
-
     if (functionName === "userLogin") {
       return await userLogin({ event });
     }
@@ -26,6 +25,7 @@ export async function api(event, context) {
       return await requestToken({ event });
     }
   } catch (error) {
+    /* istanbul ignore next */
     return error;
   }
 }
