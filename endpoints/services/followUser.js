@@ -33,6 +33,7 @@ export default async function ({ event }) {
           followerId: currentUser.userId,
           followingId: followingUser._id,
         });
+        /* istanbul ignore next */
         return generateResponse(200, {
           message: "followed",
         });
@@ -40,6 +41,7 @@ export default async function ({ event }) {
         /* istanbul ignore next */
         console.log(e)
       }
+      /* istanbul ignore next */
       return generateResponse(200, {
         message: "followed",
       });
