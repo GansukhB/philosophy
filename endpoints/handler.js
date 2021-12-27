@@ -5,6 +5,7 @@ import requestOtp from "./services/requestOtp";
 import requestToken from "./services/requestToken";
 import profileUpdate from "./services/profileUpdate";
 import followUser from "./services/followUser";
+import createPost from "./services/createPost";
 
 export async function api(event, context) {
   context.callbackWaitsForEmptyEventLoop = false;
@@ -24,6 +25,8 @@ export async function api(event, context) {
         return await profileUpdate({ event });
       case "follow":
         return await followUser({ event });
+      case "createPost":
+        return await createPost({ event });
       default:
         return generateResponse(404, {
           message: "not found",
