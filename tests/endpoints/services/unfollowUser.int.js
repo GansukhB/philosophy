@@ -88,7 +88,7 @@ describe("Test endpoint /endpoint/unfollow", () => {
     expect(responseBody.message).toBeDefined();
     expect(responseBody.message).toBe("not allowed request");
   });
-  test("Test following user doesn't exist", async () => {
+  test("Test unfollowing user doesn't exist", async () => {
     let unfollowingUserId = mongoose.Types.ObjectId();
     const event = eventGenerator({
       method: "post",
