@@ -30,7 +30,7 @@ export async function api(event, context) {
           message: "not found",
         });
     }
-    if (functionName === "topicSubscription") {
+    if (functionName === "subscribe") {
       return await topicSubscription({ event })
     }
   } catch (error) {

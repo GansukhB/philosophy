@@ -3,13 +3,11 @@ const mongoose = require("mongoose");
 const SubscribeSchema = new mongoose.Schema(
     {
         userId: {
-            type: mongoose.SchemaTypes.ObjectId,
-            required: false
+            type: String,
+            required: true,
         },
         topicId: {
             type: String,
-            maxlength: 64,
-            minlength: 2,
             required: true,
         },
     },
