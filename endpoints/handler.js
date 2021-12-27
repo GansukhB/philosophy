@@ -5,8 +5,9 @@ import requestOtp from "./services/requestOtp";
 import requestToken from "./services/requestToken";
 import profileUpdate from "./services/profileUpdate";
 import followUser from "./services/followUser";
+import imageUpload from "./services/imageUpload";
 
-export async function api(event, context) {
+export async function api(event, context, callback) {
   context.callbackWaitsForEmptyEventLoop = false;
   try {
     const functionName = event.pathParameters.functionName;
@@ -24,6 +25,8 @@ export async function api(event, context) {
         return await profileUpdate({ event });
       case "follow":
         return await followUser({ event });
+      case "imageUpload":
+        return await imageUpload({ event, context, callback });
       default:
         return generateResponse(404, {
           message: "not found",
