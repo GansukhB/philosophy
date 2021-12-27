@@ -15,33 +15,34 @@ export default async function ({ event }) {
     try {
       await connectDb();
       const currentUser = verify(event);
-      const followingUser = await User.findOne({
+      const unfollowingUser = await User.findOne({
         _id: userId,
       }).lean();
-      if (!followingUser) {
+      if (!unfollowingUser) {
         return generateResponse(404, {
           message: "user not found",
         });
       }
-      if (followingUser._id == currentUser.userId) {
+      if (unfollowingUser._id == currentUser.userId) {
         return generateResponse(400, {
           message: "not allowed request",
         });
       }
+
       try {
-        await Follow.create({
+        await Follow.deleteOne({
           followerId: currentUser.userId,
-          followingId: followingUser._id,
-        });
+          followingId: unfollowingUser._id,
+        })
         return generateResponse(200, {
-          message: "followed",
-        });
+            message: "unfollowed",
+          });
       } catch (e) {
         /* istanbul ignore next */
         console.log(e)
       }
       return generateResponse(200, {
-        message: "followed",
+        message: "unfollowed",
       });
     } catch (e) {
       /* istanbul ignore next*/
