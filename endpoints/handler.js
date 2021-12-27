@@ -25,13 +25,12 @@ export async function api(event, context, callback) {
         return await profileUpdate({ event });
       case "follow":
         return await followUser({ event });
+      case "imageUpload":
+        return await imageUpload({ event, context, callback });
       default:
         return generateResponse(404, {
           message: "not found",
         });
-    }
-    if (functionName === "imageUpload") {
-      return await imageUpload({ event, context, callback });
     }
   } catch (error) {
     /* istanbul ignore next */
