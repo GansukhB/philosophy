@@ -39,7 +39,7 @@ export default async function ({ event }) {
         });
       } catch (e) {
         /* istanbul ignore next */
-        console.log(e)
+        console.log(e);
       }
       /* istanbul ignore next */
       return generateResponse(200, {

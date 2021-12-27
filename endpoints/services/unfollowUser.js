@@ -33,14 +33,14 @@ export default async function ({ event }) {
         await Follow.deleteOne({
           followerId: currentUser.userId,
           followingId: unfollowingUser._id,
-        })
+        });
         /* istanbul ignore next */
         return generateResponse(200, {
-            message: "unfollowed",
-          });
+          message: "unfollowed",
+        });
       } catch (e) {
         /* istanbul ignore next */
-        console.log(e)
+        console.log(e);
       }
       /* istanbul ignore next */
       return generateResponse(200, {
