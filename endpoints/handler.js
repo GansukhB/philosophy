@@ -25,13 +25,13 @@ export async function api(event, context) {
         return await profileUpdate({ event });
       case "follow":
         return await followUser({ event });
+      case "subscribe":
+        return await topicSubscription({ event });
       default:
         return generateResponse(404, {
           message: "not found",
         });
-    }
-    if (functionName === "subscribe") {
-      return await topicSubscription({ event })
+
     }
   } catch (error) {
     /* istanbul ignore next */

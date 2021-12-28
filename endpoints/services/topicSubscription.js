@@ -3,7 +3,7 @@ import connectDb from "../../common/db"
 import generateResponse from "../../common/response"
 import { HTTP_ERROR_400, HTTP_ERROR_403 } from "../../common/statuses";
 import { verify } from "../../common/jwt";
-import { Subscribe } from "../../common/models/";
+// import { Topic } from "../../common/models/Topic";
 import { ObjectId } from "mongodb";
 
 export default async function ({ event }) {
@@ -20,9 +20,9 @@ export default async function ({ event }) {
         //     topicId: requestBody.topicId
         // })
         try {
-            const existingTopic = await topics.findOne({
+            const existingTopic = await Topic.findOne({
                 _id: topicId
-            }).lean()
+            }).lean();
             if (existingTopic) {
                 try {
                     await Subscribe.create({
