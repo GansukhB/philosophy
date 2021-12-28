@@ -8,20 +8,22 @@ export default async function ({ event }) {
 
 	try {
 		await connectDb();
-		const { name, description, coverImage, _id } = requestBody;
+		const { title, description, coverImage, _id } = requestBody;
 
 		try {
 			const topicId = await Topic.findByIdAndUpdate("61c3d2a90ae8f0b7a6742dcf");
-			topicId.name = name;
-			topicId.description = description;
-			topicId.coverImage = coverImage;
-
-			topicId.save();
-
-			console.log("changed topicId", topicId);
-			return generateResponse(201, {
-				message: "Topic updated",
-			});
+			if (topicId) {
+				topicId.title = title;
+				topicId.description = description;
+				topicId.coverImage = coverImage;
+	
+				topicId.save();
+	
+				console.log("changed topicId", topicId);
+				return generateResponse(201, {
+					message: "Topic updated",
+				});
+			}
 		} catch (e) {
 			console.log("error during selecting from mongodb", e);
 		}

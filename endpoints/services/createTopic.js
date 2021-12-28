@@ -1,4 +1,4 @@
-import { Topic, User } from "../../common/models/Topic";
+import { Topic } from "../../common/models/Topic";
 import { HTTP_ERROR_400 } from "../../common/statuses";
 import connectDb from "../../common/db";
 import generateResponse from "../../common/response";
@@ -7,16 +7,21 @@ export default async function ({ event }) {
 	const requestBody = event && event.body ? JSON.parse(event.body) : {};
 	try {
 		await connectDb();
-		const { name, description, coverImage, _id, createdBy } = requestBody;
+		const { title, description, coverImage, _id, createdBy } = requestBody;
 
+		if (!title) {
+			return generateResponse(400, {
+				message: "Title is required",
+			});
+		}
+		
 		const topic = await Topic.create({
-			name: name,
+			title: title,
 			description: description,
 			createdBy: createdBy,
 			coverImage: coverImage,
 		});
-        console.log("topic created by ==> ", topic.createdBy);
-        
+
 		return generateResponse(201, {
 			message: "Topic created",
 		});

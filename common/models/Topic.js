@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const TopicSchema = new mongoose.Schema(
 	{
-		name: {
+		title: {
 			type: String,
 			maxlength: 64,
 			required: true,
