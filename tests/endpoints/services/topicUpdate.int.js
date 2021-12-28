@@ -6,10 +6,7 @@ import connectDb from "../../../common/db";
 
 describe("Test endpoint /endpoint/topicUpdate", () => {
 	beforeAll(async () => {
-		if (!process.env.CI)
-			process.env.MONGODB_HOST = "mongodb://127.0.0.1:27017/test";
-		await connectDb();
-		await Topic.deleteMany();
+		await setupEnvironment();
 	});
 	test("Test request without title of the topic", async () => {
 		const event = eventGenerator({
@@ -34,3 +31,5 @@ describe("Test endpoint /endpoint/topicUpdate", () => {
 		mongoose.connection.close();
 	});
 });
+
+// topic bn uu ugui gdgiin shalgah

@@ -2,14 +2,14 @@ const eventGenerator = require("../../testUtils/eventGenerator");
 const handler = require("../../../endpoints/handler");
 import mongoose from "mongoose";
 import { Topic } from "../../../common/models/Topic";
-import connectDb from "../../../common/db";
+import {
+	setupEnvironment,
+	clearDatabase,
+} from "../../testUtils/setupEnvironment";
 
 describe("Test endpoint /endpoint/createTopic", () => {
 	beforeAll(async () => {
-		if (!process.env.CI)
-			process.env.MONGODB_HOST = "mongodb://127.0.0.1:27017/test";
-		await connectDb();
-		await Topic.deleteMany();
+		await setupEnvironment();
 	});
 	test("Test request without title of the topic", async () => {
 		const event = eventGenerator({
@@ -34,3 +34,6 @@ describe("Test endpoint /endpoint/createTopic", () => {
 		mongoose.connection.close();
 	});
 });
+
+// tuhain topic id bhgui ued ymr aldaa garah
+// topic ni irehdee hedeer iruuleh

@@ -31,25 +31,18 @@ export async function api(event, context) {
         return await followUser({ event });
       case "unfollow":
         return await unfollowUser({ event });
+      case "createTopic":
+        return await createTopic({ event });
+      case "topicUpdate":
+        return await topicUpdate({ event });
+      case "topicGet":
+        return await topicGet({ event });
+      case "topicList":
+        return await topicList({ event });
       default:
         return generateResponse(404, {
           message: "not found",
         });
-    }
-    if (functionName === "createTopic") {
-      return await createTopic({ event });
-    }
-
-    if (functionName === "topicUpdate") {
-      return await topicUpdate({ event });
-    }
-
-    if (functionName === "topicGet") {
-      return await topicGet({ event });
-    }
-
-    if (functionName === "topicList") {
-      return await topicList({ event });
     }
   } catch (error) {
     /* istanbul ignore next */

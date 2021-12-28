@@ -3,6 +3,7 @@ import connectDb from "../../common/db";
 import { User } from "../../common/models/User";
 import { UserOtp } from "../../common/models/UserOtp";
 import { Follow } from "../../common/models/FollowUser";
+import { Topic } from "../../common/models/Topic";
 
 async function setupEnvironment() {
   if (!process.env.MONGODB_HOST) {
@@ -18,12 +19,14 @@ async function setupEnvironment() {
   await User.deleteMany();
   await UserOtp.deleteMany();
   await Follow.deleteMany();
+  await Topic.deleteMany();
 }
 
 async function clearDatabase() {
   await User.deleteMany();
   await UserOtp.deleteMany();
   await Follow.deleteMany();
+  await Topic.deleteMany();
 
   mongoose.connection.close();
 }
